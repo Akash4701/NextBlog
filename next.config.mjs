@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-export default nextConfig;
+const nextConfig = {
+    images: {
+      domains: ['thumbs.dreamstime.com'], // Add your image domain here
+    },
+  };
+  
+  export default nextConfig;
+  
