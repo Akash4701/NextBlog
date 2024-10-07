@@ -38,6 +38,9 @@ model Comments {
   text  String
   blogId String @db.ObjectId
   blog       Blog   @relation(fields: [blogId], references: [id])
+  
+  createdAt  DateTime @default(now())
+   publishedAt   DateTime @updatedAt
   // userId String @db.ObjectId
   // user       User   @relation(fields: [userId], references: [id])
 

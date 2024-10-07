@@ -32,7 +32,7 @@ function BlogItem({ blog }) {
 
       {/* Blog Description */}
       <p className="italic text-gray-500 text-base leading-relaxed line-clamp-3">
-        {description.slice(0, 40)} ...
+        {description.slice(0, 80)} ...
       </p>
 
       {/* Read More Button */}

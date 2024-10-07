@@ -3,6 +3,7 @@ import { IndividualBlog } from '../../../../action/actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddComment from '../../../../components/CommentAddForm'
+import Commentlist from '../../../../components/commentListing'
 
 const BlogDetail = async ({ params }) => {
   const id = params?.id;
@@ -57,6 +58,8 @@ const BlogDetail = async ({ params }) => {
       </Link>
     </div>
     <AddComment blogId={id}/>
+    <Commentlist blogId={id}/>
+
       </div>
     </div>
   );

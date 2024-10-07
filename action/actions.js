@@ -120,6 +120,8 @@ export const SearchBlogs=async(query)=>{
       }:{}
       
     })
+
+    revalidatePath(`\blogs`)
     return blogs;
   
   }catch(error){
@@ -140,11 +142,54 @@ export const AddComment = async (id, formData) => {
         text: text
       }
     });
+    
+
+    revalidatePath(`/blogs/${id}`)
 
     return added_comment;
+
   } catch (error) {
     console.log("Error in adding comment", error.message || error);
   }
 };
+
+export const IndividualComments=async({id})=>{
+  try{
+    const comments=await prisma.comments.findMany({
+      where:{
+        id:id
+    },
+    orderBy:{
+      createdAt:"desc"
+    }
+
+  })
+  revalidatePath(`/blogs/${id}`)
+
+  return comments
+  }catch(error){
+    console.log("error in fetching individual comments",error.message||error);
+    throw new error("failed to fetch individual comments");
+  }
+}
+
+export const deleteComment=async(Commentid,BLogId)=>{
+
+  try{
+    const deletedcomments=await prisma.comments.delete({
+      where:{
+        id:Commentid
+
+      }
+  })
+  revalidatePath(`/blogs/${BLogId}`)
+  return deletedcomments
+
+  
+  }catch(error){
+    console.log("error in deleting comment",error.message||error);
+    throw new Error("failed to delete comment");
+  }
+}
 
 
