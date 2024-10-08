@@ -13,12 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model User {
-//   id    String @id @default(auto()) @map("_id") @db.ObjectId
-//   email String
-//   blog Blog[]
-//   comment Comments[]
-// }
+model User {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String
+  name  String
+  username String @unique
+  password String @unique
+   createdAt  DateTime @default(now())
+  publishedAt   DateTime @updatedAt
+  Comment Comments[]
+  Blog   Blog[]
+
+
+ 
+}
 model Blog {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   imageUrl String?
@@ -30,8 +38,10 @@ model Blog {
   publishedAt   DateTime @updatedAt
   comments  Comments[]
 
-  // userId String @db.ObjectId
-  // user   User   @relation(fields: [userId], references: [id])
+  authorId String @db.ObjectId
+  author   User?   @relation(fields: [authorId], references: [id])
+
+ 
 }
 model Comments {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
@@ -41,8 +51,10 @@ model Comments {
   
   createdAt  DateTime @default(now())
    publishedAt   DateTime @updatedAt
-  // userId String @db.ObjectId
-  // user       User   @relation(fields: [userId], references: [id])
+  authorId String @db.ObjectId
+  author     User   @relation(fields: [authorId], references: [id])
+
+  
 
   
 }

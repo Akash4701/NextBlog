@@ -31,12 +31,12 @@ const CommentList = ({ blogId }) => {
 
   return (
     <div className="mt-20 max-w-4xl mx-auto">
-      {/* Section title */}
+      
       <h2 className="text-4xl font-extrabold text-yellow-300 mt-10 mb-6 text-center">
         Comments({comments.length})
       </h2>
 
-      {/* Comment section */}
+     
       {comments.length === 0 ? (
         <p className="text-gray-400 text-lg text-center">
           No comments yet. Be the first to comment!
@@ -48,12 +48,12 @@ const CommentList = ({ blogId }) => {
               key={comment.id}
               className="bg-gray-900 p-8 rounded-3xl shadow-xl border border-gray-700 hover:shadow-2xl transition duration-300 ease-in-out"
             >
-              {/* Author Name */}
+             
               <div className="text-xl font-bold text-green-400 mb-4">
                 Written by: {comment.authorName ? comment.authorName : 'Anonymous'}
               </div>
 
-              {/* Comment Text */}
+           
               <p className="text-lg text-gray-200 leading-relaxed ">
                 {comment.text}
               </p>
@@ -63,10 +63,10 @@ const CommentList = ({ blogId }) => {
                 Published on: {new Date(comment.createdAt).toLocaleDateString()}
               </div>
 
-              {/* Delete Button aligned to the right */}
+           
               <div className="flex justify-end mt-4">
                 <button
-                  onClick={() => handleDelete(comment.id)} // Pass comment.id to handleDelete
+                  onClick={() => handleDelete(comment.id)} 
                   className="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-center"
                 >
                   Delete
