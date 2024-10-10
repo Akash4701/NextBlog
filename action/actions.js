@@ -1,5 +1,7 @@
 'use server';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { PrismaClient } from '@prisma/client';
+import { getServerSession } from 'next-auth';
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -12,10 +14,14 @@ export const addBlog = async (formData) => {
     const category = formData.get('category');
     const description = formData.get('description');
 
+    const session=await getServerSession(authOptions);
+
+
     console.log('Received form data:', { imageUrl, title, category, description });
 
     if (!title || !category || !description) {
       throw new Error('Missing required fields: title, category, or description');
+
     }
 
     const new_blog = await prisma.blog.create({
@@ -24,6 +30,7 @@ export const addBlog = async (formData) => {
         title,
         category,
         description,
+       authorId:session?.user?.id
       },
     });
 

@@ -1,23 +1,19 @@
-'use client'
+'use client';
 import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { updateBlog } from '../action/actions';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
-
-
-export default function BlogForm({blog}) {
+export default function BlogForm({ blog }) {
   const { register, handleSubmit, reset } = useForm();
-  console.log(blog);
-  const router = useRouter()
+  const router = useRouter();
+  const ref = useRef();
 
   const { id, title, description, imageUrl, category } = blog || {};
-  const ref=useRef();
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const formData = new FormData();
       formData.append('title', data.title);
@@ -25,73 +21,84 @@ export default function BlogForm({blog}) {
       formData.append('imageUrl', data.imageUrl);
       formData.append('category', data.category);
 
-      await updateBlog(id,formData); // Directly call the server action
+      await updateBlog(id, formData); // Directly call the server action
 
       ref?.current?.reset(); // Reset form after successful submission
       console.log("Blog updated successfully!");
-
-    router.push('/blogs');
+      router.push('/blogs');
     } catch (error) {
-      console.error("Error UPDATED blog:", error);
+      console.error("Error updating blog:", error);
     }
   };
- 
-
-  
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Update Blog post</h2>
-
-        {/* Correctly using handleSubmit here */}
-        <form ref={ref} onSubmit={handleSubmit(onSubmit)}className="space-y-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white flex justify-center items-center py-12">
+      <div className="w-full max-w-lg mx-auto bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl p-8">
+        <h2 className="text-3xl font-extrabold text-center text-white mb-8">Update Blog Post</h2>
+        
+        <form ref={ref} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          
           {/* Title Field */}
           <TextField
             id="title"
             label="Title"
-            variant="outlined"
-            defaultValue={title}
+            variant="filled"
             fullWidth
+            defaultValue={title}
             {...register('title')}
+            InputLabelProps={{ className: "text-gray-300" }}
+            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
           {/* Description Field */}
           <TextField
             id="description"
             label="Description"
-            variant="outlined"
+            variant="filled"
             multiline
             rows={4}
-            defaultValue={description}
             fullWidth
+            defaultValue={description}
             {...register('description', { required: true })}
+            InputLabelProps={{ className: "text-gray-300" }}
+            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
           {/* Image URL Field */}
           <TextField
             id="imageUrl"
-            label="Upadte Image URL"
-            variant="outlined"
-            defaultValue={imageUrl?imageUrl:""}
+            label="Update Image URL"
+            variant="filled"
             fullWidth
+            defaultValue={imageUrl || ""}
             {...register('imageUrl', { required: true })}
+            InputLabelProps={{ className: "text-gray-300" }}
+            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
           {/* Category Field */}
           <TextField
             id="category"
             label="Category"
-            variant="outlined"
-            defaultValue={category}
+            variant="filled"
             fullWidth
+            defaultValue={category}
             {...register('category', { required: true })}
+            InputLabelProps={{ className: "text-gray-300" }}
+            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
           {/* Submit Button */}
-          <Button variant="contained" color="primary" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            color="secondary"
+            type="submit"
+            fullWidth
+            className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+          >
             Update Blog
           </Button>
+
         </form>
       </div>
     </div>

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
-import Navbar from "../../components/navbar"
+import Navbar from "../../components/Navbar"
+import {Providers} from './provider'
+
 
 
 
@@ -18,10 +20,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        
+        <Providers>
+        <div className="bg-slate-800 ">
         <Navbar/>
-        <h1>This is my home component</h1>
+        </div>
+       
+       
+
      
         {children}
+        
+        </Providers>
       </body>
     </html>
   );

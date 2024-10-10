@@ -3,6 +3,7 @@ import { fetchBlogs } from '../../../action/actions';
 import BlogItem from '../../../components/BlogItem';
 import Search from '../../../components/Search'
 import {SearchBlogs} from '../../../action/actions'
+// import Navbar from '../../../components/Navbar';
 
 const Blogs = async ({searchParams}) => {
   // const blogs = await fetchBlogs();
@@ -16,9 +17,11 @@ const Blogs = async ({searchParams}) => {
 
   return (
     <>
+  
     
     <div className="min-h-screen bg-gradient-to-br from-gray-900  to-gray-700 text-white p-2">
     <div className="w-full mx-auto bg-gray-800 border  rounded-3xl shadow-2xl p-8">
+  
     <Search/>
       <h1 className='text-center text-4xl font-extrabold mt-8 px-4 py-6 text-violet-500 border-2 border-violet-600  bg-clip-text'>
         All Blogs

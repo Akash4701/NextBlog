@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -138,12 +139,23 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={pending}
-              className={`w-full bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 ease-in-out ${
+              className={`max-w-lg mr-5 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 ease-in-out ${
                 pending ? 'opacity-50 cursor-not-allowed' : ''
               }`}
             >
-              {pending ? 'Submitting...' : 'Register'}
+              {pending ? 'Wait...' : 'Register'}
             </button>
+         Already have an account?
+            <Link
+            href={`/auth/register/login`}
+
+              
+              disabled={pending}
+              className={`ml-9 max-w-lg bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 ease-in-out $`}
+            >
+           Login
+            </Link>
+
           </div>
 
           {error && <p className="text-red-500 text-center mt-4">{error}</p>}

@@ -7,7 +7,7 @@ import { addBlog } from'../../../../action/actions'; // Import the server action
 
 export default function BlogForm() {
   const { register, handleSubmit, reset } = useForm();
-  const ref=useRef();
+  const ref = useRef();
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -28,55 +28,69 @@ export default function BlogForm() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create a new blog post</h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white flex justify-center items-center py-12">
+      <div className="w-full max-w-lg mx-auto bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl p-8">
+        <h2 className="text-3xl font-extrabold text-center text-white mb-8">Create a New Blog Post</h2>
         
-        <form ref={ref} onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
+        <form ref={ref} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          
           {/* Title Field */}
           <TextField
             id="title"
             label="Title"
-            variant="outlined"
+            variant="filled"
             fullWidth
             {...register('title', { required: true })}
+            InputLabelProps={{ className: "text-gray-300" }}
+            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
           {/* Description Field */}
           <TextField
             id="description"
             label="Description"
-            variant="outlined"
+            variant="filled"
             multiline
             rows={4}
             fullWidth
             {...register('description', { required: true })}
+            InputLabelProps={{ className: "text-gray-300" }}
+            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
           {/* Image URL Field */}
           <TextField
             id="imageUrl"
             label="Image URL"
-            variant="outlined"
+            variant="filled"
             fullWidth
             {...register('imageUrl', { required: true })}
+            InputLabelProps={{ className: "text-gray-300" }}
+            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
           {/* Category Field */}
           <TextField
             id="category"
             label="Category"
-            variant="outlined"
+            variant="filled"
             fullWidth
             {...register('category', { required: true })}
+            InputLabelProps={{ className: "text-gray-300" }}
+            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
           {/* Submit Button */}
-          <Button variant="contained" color="primary" type="submit" fullWidth>
+          <Button
+            variant="contained"
+            color="secondary"
+            type="submit"
+            fullWidth
+            className="bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out"
+          >
             Add Blog
           </Button>
-          
+
         </form>
       </div>
     </div>
