@@ -31,7 +31,7 @@ const Navbar = () => {
                 </Link>
 
                 {session?.data?.user && (
-                    <Link href="/blogs/Addblog" className="text-white hover:text-yellow-300 text-lg font-medium transition-transform transform hover:scale-110 ease-in-out duration-300">
+                    <Link href="/blogs/AddBlog" className="text-white hover:text-yellow-300 text-lg font-medium transition-transform transform hover:scale-110 ease-in-out duration-300">
                         Create Blog
                     </Link>
                 )}

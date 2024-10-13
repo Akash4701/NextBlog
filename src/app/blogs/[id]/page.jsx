@@ -1,19 +1,23 @@
+
 import React from 'react';
-import { IndividualBlog } from '../../../../action/actions';
+import { IndividualBlog, IndividualComments } from '../../../../action/actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddComment from '../../../../components/CommentAddForm'
 import Commentlist from '../../../../components/commentListing'
 
+
 const BlogDetail = async ({ params }) => {
   const id = params?.id;
   console.log(params);
   console.log(id);
-  
-
   const blog = await IndividualBlog(id);
+  console.log(blog);
+  const comments=await IndividualComments(id);
+  console.log(comments)
 
   return (
+    <>
     <div className="min-h-screen bg-gradient-to-br from-gray-900  to-gray-700 text-white p-10">
       <div className="max-w-6xl mx-auto bg-gray-800 border border-white rounded-3xl shadow-2xl p-8">
         {/* Blog Image */}
@@ -32,7 +36,8 @@ const BlogDetail = async ({ params }) => {
           {blog.category}
         </div>
 
-        {/* Blog Title */}
+        
+      
         <h1 className="text-4xl font-extrabold text-yellow-300 mb-6 leading-tight">
           {blog.title}
         </h1>
@@ -57,11 +62,18 @@ const BlogDetail = async ({ params }) => {
         Update Blog
       </Link>
     </div>
-    <AddComment blogId={id}/>
-    <Commentlist blogId={id}/>
+   
 
       </div>
     </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900  to-gray-700 text-white p-10">
+    <div className="max-w-6xl mx-auto bg-gray-800 border border-white rounded-3xl shadow-2xl p-8">
+     <AddComment comments={comments}  blogId={id}/>
+     {/* <Commentlist blogId={id}/> */}
+     </div>
+     </div>     
+
+     </>
   );
 };
 

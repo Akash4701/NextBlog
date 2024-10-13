@@ -84,6 +84,7 @@ export const updateBlog = async (id, formData) => {
     if (!title || !category || !description) {
       throw new Error('Missing required fields: title, category, or description');
     }
+    const session=await getServerSession(authOptions);
 
     // Update the blog post in the database
     const updated_blog = await prisma.blog.update({
@@ -95,6 +96,8 @@ export const updateBlog = async (id, formData) => {
         title,
         category,
         description,
+        authorId:session?.user?.id
+
       }
     });
 
@@ -141,12 +144,16 @@ export const AddComment = async (id, formData) => {
   try {
     // Extract the text value from formData
     const text = formData.get('text');
+    const session=await getServerSession(authOptions);
 
     // Create the comment in the database
     const added_comment = await prisma.comments.create({
       data: {
         blogId: id, // Assuming you're relating the comment to a blog post via its ID
-        text: text
+        text: text,
+        authorId:session?.user?.id,
+       
+
       }
     });
     
@@ -180,12 +187,12 @@ export const IndividualComments=async({id})=>{
   }
 }
 
-export const deleteComment=async(Commentid,BLogId)=>{
+export const deleteComment=async(CommentId,BLogId)=>{
 
   try{
     const deletedcomments=await prisma.comments.delete({
       where:{
-        id:Commentid
+        id:CommentId
 
       }
   })

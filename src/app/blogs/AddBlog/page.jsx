@@ -3,9 +3,13 @@ import React, { useRef } from 'react';
 import { useForm } from "react-hook-form";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { addBlog } from'../../../../action/actions'; // Import the server action
+import { addBlog } from '../../../../action/actions';
+import { useRouter } from 'next/navigation';
+import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
 
 export default function BlogForm() {
+  const router = useRouter();
   const { register, handleSubmit, reset } = useForm();
   const ref = useRef();
 
@@ -18,19 +22,46 @@ export default function BlogForm() {
       formData.append('imageUrl', data.imageUrl);
       formData.append('category', data.category);
 
-      await addBlog(formData); // Directly call the server action
+      const res = await addBlog(formData);
+      if (res) {
+        router.push('/blogs');
+        toast.success("Blog created successfully!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
 
-      ref?.current?.reset(); // Reset form after successful submission
-      console.log("Blog created successfully!");
+       
+        ref?.current?.reset();
+      }
+
+       // Reset the form
     } catch (error) {
-      console.error("Error creating blog:", error);
+      // Show an error toast notification
+      toast.error(`Error creating blog: ${error.message}`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white flex justify-center items-center py-12">
+      {/* ToastContainer should be rendered here */}
+      <ToastContainer />
       <div className="w-full max-w-lg mx-auto bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl p-8">
-        <h2 className="text-3xl font-extrabold text-center text-white mb-8">Create a New Blog Post</h2>
+        <h2 className="text-3xl font-extrabold text-center text-violet-500 mb-8">Create a New Blog Post</h2>
         
         <form ref={ref} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           

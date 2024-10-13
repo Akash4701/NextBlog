@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { fetchBlogs } from '../../../action/actions';
 import BlogItem from '../../../components/BlogItem';
 import Search from '../../../components/Search'
 import {SearchBlogs} from '../../../action/actions'
 // import Navbar from '../../../components/Navbar';
+import ScrollToTop from "react-scroll-to-top";
 
 const Blogs = async ({searchParams}) => {
   // const blogs = await fetchBlogs();
@@ -35,6 +37,8 @@ const Blogs = async ({searchParams}) => {
         </div>
       </div>
       </div>
+     
+      
       </div>
       
 
