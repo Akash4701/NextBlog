@@ -31,7 +31,7 @@ function SubmitComment({ comments, blogId }) {
           text: data.comment,
           blogId: blogId,
           authorId: session?.data?.user?.id,
-          authorName: session?.data?.user?.username, // Assuming the user who adds the comment is the logged-in user
+          authorName: session?.data?.user?.username,
           createdAt: new Date(), // For display purposes
         },
       ]);

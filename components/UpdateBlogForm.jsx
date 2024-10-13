@@ -5,7 +5,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { updateBlog } from '../action/actions';
 import { useRouter } from 'next/navigation';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function BlogForm({ blog }) {
   const { register, handleSubmit, reset } = useForm();
@@ -25,9 +26,32 @@ export default function BlogForm({ blog }) {
       await updateBlog(id, formData); // Directly call the server action
 
       ref?.current?.reset(); // Reset form after successful submission
-      console.log("Blog updated successfully!");
+      
+      // Show success toast notification
+      toast.success('Blog updated successfully!', {
+        position: 'top-right',
+        autoClose: 3000, 
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
+
       router.push('/blogs');
     } catch (error) {
+      // Show error toast notification
+      toast.error('Error updating blog. Please try again.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'dark',
+      });
       console.error("Error updating blog:", error);
     }
   };
@@ -36,9 +60,11 @@ export default function BlogForm({ blog }) {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white flex justify-center items-center py-12">
       <div className="w-full max-w-lg mx-auto bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl p-8">
         <h2 className="text-3xl font-extrabold text-center text-white mb-8">Update Blog Post</h2>
-        
+
+        {/* ToastContainer to display notifications */}
+        <ToastContainer />
+
         <form ref={ref} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          
           {/* Title Field */}
           <TextField
             id="title"
@@ -99,9 +125,9 @@ export default function BlogForm({ blog }) {
           >
             Update Blog
           </Button>
-
         </form>
       </div>
     </div>
   );
 }
+0
