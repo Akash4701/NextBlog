@@ -5,8 +5,10 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { addBlog } from '../../../../action/actions';
 import { useRouter } from 'next/navigation';
+import MenuItem from '@mui/material/MenuItem';
 import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
-import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
+import "react-toastify/dist/ReactToastify.css";
+import { techCategories } from '../../../../components/tech/techcategories'; // Import the CSS for styling
 
 export default function BlogForm() {
   const router = useRouter();
@@ -106,10 +108,17 @@ export default function BlogForm() {
             label="Category"
             variant="filled"
             fullWidth
+            select
             {...register('category', { required: true })}
             InputLabelProps={{ className: "text-gray-300" }}
             InputProps={{ className: "text-white bg-gray-700" }}
-          />
+          >
+            {techCategories.map((category) => (
+              <MenuItem key={category.value} value={category.value}>
+                {category.label}
+              </MenuItem>
+            ))}
+          </TextField>
 
           {/* Submit Button */}
           <Button

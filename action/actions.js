@@ -119,6 +119,28 @@ export const updateBlog = async (id, formData) => {
   }
 };
 
+export const deleteBlogs = async (blogId) => {
+  try {
+    // First, delete all comments associated with the blog
+    await prisma.comments.deleteMany({
+      where: {
+        blogId: blogId,
+      },
+    });
+
+    // Then, delete the blog itself
+    await prisma.blog.delete({
+      where: {
+        id: blogId,
+      },
+    });
+
+    console.log('Blog and associated comments deleted successfully');
+  } catch (error) {
+    console.error('Failed to delete blog or comments:', error);
+    throw new Error('Failed to delete blog or comments');
+  }
+};
 export const SearchBlogs=async(query)=>{
   try {
     const blogs=await prisma.blog.findMany({
@@ -130,15 +152,16 @@ export const SearchBlogs=async(query)=>{
       }:{}
       
     })
-
-    revalidatePath(`\blogs`)
+    revalidatePath(`/blogs`)
     return blogs;
-  
   }catch(error){
-    console.log("error in searching blogs",error.message||error)
-    throw new error("failed to search blogs");
+    console.error('Error in SearchBlogs function:', error.message || error);
+    throw new Error('Failed to search blogs');
   }
 }
+
+
+
 
 export const AddComment = async (id, formData) => {
   try {
@@ -146,7 +169,7 @@ export const AddComment = async (id, formData) => {
     const text = formData.get('text');
     const session=await getServerSession(authOptions);
 
-    // Create the comment in the database
+   
     const added_comment = await prisma.comments.create({
       data: {
         blogId: id, // Assuming you're relating the comment to a blog post via its ID
@@ -189,21 +212,37 @@ export const IndividualComments=async({id})=>{
 
 export const deleteComment=async(CommentId,BLogId)=>{
 
-  try{
-    const deletedcomments=await prisma.comments.delete({
-      where:{
-        id:CommentId
+  const session=await getServerSession(authOptions);
+  const commentdata=await prisma.comments.findFirst({
+    where:{
+      id:CommentId
+    }
+  }
+  )
 
-      }
-  })
-  revalidatePath(`/blogs/${BLogId}`)
-  return deletedcomments
-
+  if(session?.user?.id===commentdata.authorId){
+    try{
+      const deletedcomments=await prisma.comments.delete({
+        where:{
+          id:CommentId
   
-  }catch(error){
+        }
+    })
+    revalidatePath(`/blogs/${BLogId}`)
+    return deletedcomments
+
+  }  catch(error){
     console.log("error in deleting comment",error.message||error);
     throw new Error("failed to delete comment");
   }
+
+  
+
+  
+
+}else{
+  throw new Error("you are not the author of this comment");
+}
 }
 
 

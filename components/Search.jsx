@@ -24,7 +24,7 @@ function Search() {
   };
 
   return (
-    <div className="flex items-center justify-center w-full max-w-md mx-auto mt-6">
+    <div className="flex items-center justify-center min-w-full mx-auto mt-6">
       <div className="relative w-full">
         {/* Search Icon */}
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -35,7 +35,7 @@ function Search() {
         <input
           type="text"
           id="search"
-          className="block w-full pl-10 pr-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all ease-in-out duration-300 shadow-lg"
+          className="w-full pl-10 pr-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all ease-in-out duration-300 shadow-lg"
           placeholder="Search Blogs..."
           value={searchQuery}
           onChange={(e) => handleSearch(e.target.value)}

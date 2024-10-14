@@ -27,17 +27,17 @@ function SubmitComment({ comments, blogId }) {
       setOptimisticComments((prevComments) => [
         ...prevComments,
         {
-          id: Math.random(), // Temporary ID until server response
+          id: Math.random(), 
           text: data.comment,
           blogId: blogId,
           authorId: session?.data?.user?.id,
           authorName: session?.data?.user?.username,
-          createdAt: new Date(), // For display purposes
+          createdAt: new Date(),
         },
       ]);
     });
 
-    // Add comment to the server
+   
     AddComment(blogId, formData)
       .then(() => {
         toast.success('New Comment Added', {

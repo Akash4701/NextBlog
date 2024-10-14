@@ -4,7 +4,7 @@ import { IndividualBlog, IndividualComments } from '../../../../action/actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import AddComment from '../../../../components/CommentAddForm'
-import Commentlist from '../../../../components/commentListing'
+
 
 
 const BlogDetail = async ({ params }) => {
@@ -20,34 +20,28 @@ const BlogDetail = async ({ params }) => {
     <>
     <div className="min-h-screen bg-gradient-to-br from-gray-900  to-gray-700 text-white p-10">
       <div className="max-w-6xl mx-auto bg-gray-800 border border-white rounded-3xl shadow-2xl p-8">
-        {/* Blog Image */}
+       
         <div className="relative overflow-hidden rounded-lg mb-8 shadow-lg">
           <img
             src={blog.imageUrl}
             alt={blog.title}
-            width={1280} // You can adjust width/height to the actual dimensions of your image
-            height={720} // to maintain image aspect ratio
+            width={1280} 
+            height={720} 
             className="w-full h-[400px] object-cover transition-transform transform hover:scale-110 duration-300"
           />
         </div>
-
-        {/* Blog Category */}
+       
         <div className="inline-block text-sm font-bold uppercase text-green-300 bg-gray-900 border-2 border-green-400 px-4 py-2 rounded-full mb-6 shadow-md">
           {blog.category}
-        </div>
-
-        
+        </div>  
       
         <h1 className="text-4xl font-extrabold text-yellow-300 mb-6 leading-tight">
           {blog.title}
         </h1>
 
-        {/* Blog Description */}
         <p className="text-lg text-gray-300 leading-relaxed mb-8">
           {blog.description}
         </p>
-
-        {/* Published Date */}
         <div className="text-sm text-gray-400">
           Published on{' '}
           <span className="font-medium text-gray-300">

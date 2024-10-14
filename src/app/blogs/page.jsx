@@ -8,11 +8,11 @@ import {SearchBlogs} from '../../../action/actions'
 import ScrollToTop from "react-scroll-to-top";
 
 const Blogs = async ({searchParams}) => {
-  // const blogs = await fetchBlogs();
+ 
   console.log(searchParams);
   console.log(searchParams.query)
   const query=searchParams.query;
-  // console.log(blogs);
+ 
   const blogs=await SearchBlogs(query);
 
   

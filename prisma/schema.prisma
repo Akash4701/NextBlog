@@ -36,7 +36,7 @@ model Blog {
   published Boolean @default(true)
   createdAt  DateTime @default(now())
   publishedAt   DateTime @updatedAt
-  comments  Comments[]
+  comments  Comments[]  
 
   authorId String @db.ObjectId
   author   User?   @relation(fields: [authorId], references: [id])
