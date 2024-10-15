@@ -22,7 +22,7 @@ export default function RootLayout({
       <body>
         
         <Providers>
-        <div className="bg-slate-800 ">
+        <div className="bg-slate-700 ">
         <Navbar/>
         </div>
        

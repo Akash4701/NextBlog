@@ -19,6 +19,7 @@ model User {
   name  String
   username String @unique
   password String @unique
+  prefferedtopics String[]
    createdAt  DateTime @default(now())
   publishedAt   DateTime @updatedAt
   Comment Comments[]
@@ -33,6 +34,7 @@ model Blog {
   title  String
   description String?
   category  String
+  tags        String[]
   published Boolean @default(true)
   createdAt  DateTime @default(now())
   publishedAt   DateTime @updatedAt

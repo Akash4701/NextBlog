@@ -1,28 +1,37 @@
 'use client';
-import React, { useRef } from 'react';
-import { useForm } from "react-hook-form";
+import React, { useRef, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { addBlog } from '../../../../action/actions';
-import { useRouter } from 'next/navigation';
 import MenuItem from '@mui/material/MenuItem';
-import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
+import { useRouter } from 'next/navigation';
+import { toast, ToastContainer } from "react-toastify"; 
 import "react-toastify/dist/ReactToastify.css";
-import { techCategories } from '../../../../components/tech/techcategories'; // Import the CSS for styling
+import { techCategories } from '../../../../components/tech/techcategories';
+import { techtags } from '../../../../components/tech/techtags'
+import Select from '@mui/material/Select';
+import Chip from '@mui/material/Chip';
 
 export default function BlogForm() {
+  const [selectedTags, setSelectedTags] = useState([]);
   const router = useRouter();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control, setValue, formState: { errors } } = useForm();
   const ref = useRef();
 
+  // Handles adding a tag from dropdown
+  const handleTagChange = (event) => {
+    setSelectedTags(event.target.value);
+    setValue('tags', event.target.value); // Set form value for tags
+  };
+
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const formData = new FormData();
       formData.append('title', data.title);
       formData.append('description', data.description);
       formData.append('imageUrl', data.imageUrl);
       formData.append('category', data.category);
+      formData.append('tags', JSON.stringify(selectedTags));
 
       const res = await addBlog(formData);
       if (res) {
@@ -37,14 +46,9 @@ export default function BlogForm() {
           progress: undefined,
           theme: "dark",
         });
-
-       
         ref?.current?.reset();
       }
-
-       // Reset the form
     } catch (error) {
-      // Show an error toast notification
       toast.error(`Error creating blog: ${error.message}`, {
         position: "top-right",
         autoClose: 3000,
@@ -60,7 +64,6 @@ export default function BlogForm() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white flex justify-center items-center py-12">
-      {/* ToastContainer should be rendered here */}
       <ToastContainer />
       <div className="w-full max-w-lg mx-auto bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl p-8">
         <h2 className="text-3xl font-extrabold text-center text-violet-500 mb-8">Create a New Blog Post</h2>
@@ -119,6 +122,51 @@ export default function BlogForm() {
               </MenuItem>
             ))}
           </TextField>
+
+          {/* Tags Input - Dropdown with Chips */}
+          <div>
+            <label htmlFor="tags" className="block text-sm font-medium text-gray-300">Blog Tags *</label>
+            <Controller
+              name="tags"
+              control={control}
+              defaultValue={[]}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  multiple
+                  value={selectedTags}
+                  onChange={handleTagChange}
+                  renderValue={(selected) => (
+                    <div className="flex flex-wrap gap-2">
+                      {selected.map((tag) => (
+                        <Chip key={tag} 
+                        label={tag} 
+                        onDelete={() => handleTagDelete(tag)}
+                        className="bg-gray-700 text-white" />
+                      ))}
+                    </div>
+                  )}
+                  className="mt-2 w-full bg-gray-800 text-white"
+                  inputProps={{
+                    MenuProps: {
+                      PaperProps: {
+                        style: {
+                          backgroundColor: "#333",
+                          color: "#fff",
+                        },
+                      },
+                    },
+                  }}
+                >
+                  {techtags.map((tag) => (
+                    <MenuItem key={tag.value} value={tag.value}>
+                      {tag.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
+          </div>
 
           {/* Submit Button */}
           <Button

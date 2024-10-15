@@ -8,7 +8,7 @@ const Navbar = () => {
     const session = useSession();
 
     return (
-        <nav className="bg-gradient-to-r from-gray-900 to-gray-700 h-24 mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-end rounded-3xl shadow-lg border border-gray-600">
+        <nav className="bg-gradient-to-r from-gray-900 to-gray-700 h-24 mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between rounded-3xl shadow-lg border border-gray-600">
             {/* Logo and Branding */}
             <div className="flex items-center space-x-4">
                 <Link href="/blogs" className="flex items-center">
@@ -25,8 +25,8 @@ const Navbar = () => {
             </div>
 
             {/* Navigation Links */}
-            <div className="mr-24 flex gap-10 items-center justify-center">
-                <Link href="/blogs" className="ml-8 text-white hover:text-yellow-300 text-lg font-medium transition-transform transform hover:scale-110 ease-in-out duration-300">
+            <div className="flex items-center justify-center gap-10">
+                <Link href="/blogs" className="text-white hover:text-yellow-300 text-lg font-medium transition-transform transform hover:scale-110 ease-in-out duration-300">
                     Home
                 </Link>
 
@@ -38,9 +38,9 @@ const Navbar = () => {
 
                 {/* Authentication Buttons */}
                 {session?.data?.user ? (
-                    <Logoutbutton label="Logout" />
+                    <Logoutbutton label="Logout" className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-110 ease-in-out duration-300" />
                 ) : (
-                    <Link href="/auth/register/login" className="text-white bg-blue-500 hover:bg-blue-600 text-lg font-medium py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-110 ease-in-out duration-300">
+                    <Link href="/auth/register/login" className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-full shadow-md transition-transform transform hover:scale-110 ease-in-out duration-300">
                         Login
                     </Link>
                 )}
