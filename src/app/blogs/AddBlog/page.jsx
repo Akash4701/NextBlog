@@ -11,6 +11,7 @@ import { techCategories } from '../../../../components/tech/techcategories';
 import { techtags } from '../../../../components/tech/techtags'
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import { addBlog } from '../../../../action/actions';
 
 export default function BlogForm() {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -25,15 +26,20 @@ export default function BlogForm() {
   };
 
   const onSubmit = async (data) => {
+    console.log('data',data);
     try {
       const formData = new FormData();
       formData.append('title', data.title);
       formData.append('description', data.description);
       formData.append('imageUrl', data.imageUrl);
       formData.append('category', data.category);
-      formData.append('tags', JSON.stringify(selectedTags));
+      // formData.append('tags', JSON.stringify(selectedTags));
+      data.tags.forEach(tag => {
+        formData.append('tags[]', tag);  // Append each tag separately
+      });
 
       const res = await addBlog(formData);
+      console.log('formData',formData)
       if (res) {
         router.push('/blogs');
         toast.success("Blog created successfully!", {

@@ -13,11 +13,11 @@ export const addBlog = async (formData) => {
     const title = formData.get('title');
     const category = formData.get('category');
     const description = formData.get('description');
-
+    const tags = formData.getAll('tags[]');  
     const session=await getServerSession(authOptions);
 
 
-    console.log('Received form data:', { imageUrl, title, category, description });
+    console.log('Received form data:', { imageUrl, title, category, description,tags });
 
     if (!title || !category || !description) {
       throw new Error('Missing required fields: title, category, or description');
@@ -30,9 +30,12 @@ export const addBlog = async (formData) => {
         title,
         category,
         description,
+        tags,
        authorId:session?.user?.id
       },
     });
+
+   
 
     console.log('New blog created:', new_blog);
     return new_blog;
@@ -40,7 +43,7 @@ export const addBlog = async (formData) => {
     console.error('Error in addBlog function:', error.message || error);
     throw new Error('Failed to create blog');
   } finally {
-    await prisma.$disconnect(); // Ensure disconnection
+    await prisma.$disconnect(); 
   }
 };
 
@@ -243,6 +246,22 @@ export const deleteComment=async(CommentId,BLogId)=>{
 }else{
   throw new Error("you are not the author of this comment");
 }
+}
+
+export const findBlogTags=async()=>{
+  try{
+  const inputtags=await prisma.blog.findMany({
+    select:{
+      tags:true
+    }
+  })
+  const uniqueinputtags=[... new Set(inputtags?.flatMap((blog)=>blog?.tags))];
+  return uniqueinputtags;
+}catch(error){
+  console.log("error in fetching blog tags",error.message||error);
+  throw new Error("failed to fetch blog tags");
+}
+
 }
 
 
