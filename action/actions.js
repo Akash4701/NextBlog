@@ -73,6 +73,8 @@ export const fetchBlogs = async () => {
   }
  }
 
+//  export const likeBlogs=async()
+
 
 
 export const updateBlog = async (id, formData) => {
@@ -144,24 +146,50 @@ export const deleteBlogs = async (blogId) => {
     throw new Error('Failed to delete blog or comments');
   }
 };
-export const SearchBlogs=async(query)=>{
-  try {
-    const blogs=await prisma.blog.findMany({
-      where:query?{
-        OR:[
-          {title:{contains:query}},
-          {category:{contains:query}}
-        ],
-      }:{}
+// export const SearchBlogs=async(query)=>{
+//   try {
+//     const blogs=await prisma.blog.findMany({
+//       where:query?{
+//         OR:[
+//           {title:{contains:query}},
+//           {category:{contains:query}}
+//         ],
+//       }:{}
       
-    })
-    revalidatePath(`/blogs`)
+//     })
+//     revalidatePath(`/blogs`)
+//     return blogs;
+//   }catch(error){
+//     console.error('Error in SearchBlogs function:', error.message || error);
+//     throw new Error('Failed to search blogs');
+//   }
+// }
+
+export const SearchBlogs = async (query) => {
+  try {
+    // Construct search filter dynamically
+    const searchFilter = query
+      ? {
+          OR: [
+            { title: { contains: query, mode: 'insensitive' } }, // Case insensitive search
+            { category: { contains: query, mode: 'insensitive' } },
+          ],
+        }
+      : {};
+
+    // Fetch blogs using Prisma
+    const blogs = await prisma.blog.findMany({
+      where: searchFilter,
+      orderBy: { createdAt: 'desc' }, // Ordering blogs by most re+cent
+    });
+
     return blogs;
-  }catch(error){
+  } catch (error) {
     console.error('Error in SearchBlogs function:', error.message || error);
     throw new Error('Failed to search blogs');
   }
-}
+};
+
 
 
 
@@ -265,3 +293,73 @@ export const findBlogTags=async()=>{
 }
 
 
+export const likeblogs = async (Blogid) => {
+  const session = await getServerSession(authOptions);
+  try {
+    const existingLikes = await prisma.like.findFirst({
+      where: {
+        blogId: Blogid,
+        userId: session.user.id
+      }
+    });
+
+    if (existingLikes) {
+      const updatedLike = await prisma.like.update({
+        where: {
+          id: existingLikes.id
+        },
+        data: {
+          liked: !existingLikes.liked
+        }
+      });
+      return updatedLike.liked; // Return the new like state
+    } else {
+      const newLike = await prisma.like.create({
+        data: {
+          blogId: Blogid,
+          userId: session.user.id,
+          liked: true
+        }
+      });
+      return newLike.liked; 
+    }
+  } catch (error) {
+    console.log("error in liking blog", error.message || error);
+    throw new Error("failed to like blog");
+  }
+};
+
+// Add a new function to check initial like state
+export const checkLikeStatus = async (Blogid) => {
+  const session = await getServerSession(authOptions);
+  try {
+    const existingLike = await prisma.like.findFirst({
+      where: {
+        blogId: Blogid,
+        userId: session.user.id,
+        liked: true
+      }
+    });
+    return existingLike; // Returns true if liked, false if not
+  } catch (error) {
+    console.log("error checking like status", error.message || error);
+    throw new Error("failed to check like status");
+  }
+};
+
+export const numberoflikes=async(Blogid)=>{
+  try{
+  const numberofLikes=await prisma.like.count(
+    {
+      where:{
+        blogId:Blogid,
+        liked:true
+      }
+    }
+  )
+  return numberofLikes
+}catch(error){
+  console.log("error in getting number of likes",error.message||error);
+
+}
+}

@@ -11,7 +11,33 @@ import { techCategories } from '../../../../components/tech/techcategories';
 import { techtags } from '../../../../components/tech/techtags'
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import { styled } from '@mui/material/styles';
 import { addBlog } from '../../../../action/actions';
+
+const StyledTextField = styled(TextField)({
+  '& label': {
+    color: 'rgb(209 213 219)', // text-gray-300
+  },
+  '& label.Mui-focused': {
+    color: 'rgb(209 213 219)',
+  },
+  '& .MuiFilledInput-root': {
+    backgroundColor: 'rgb(55 65 81)', // bg-gray-700
+    color: 'white',
+    '&:hover': {
+      backgroundColor: 'rgb(75 85 99)', // slightly lighter on hover
+    },
+    '&.Mui-focused': {
+      backgroundColor: 'rgb(55 65 81)',
+    },
+    '& input': {
+      color: 'white',
+    },
+    '& textarea': {
+      color: 'white',
+    }
+  }
+});
 
 export default function BlogForm() {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -77,18 +103,17 @@ export default function BlogForm() {
         <form ref={ref} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           
           {/* Title Field */}
-          <TextField
+          <StyledTextField
             id="title"
             label="Title"
             variant="filled"
             fullWidth
             {...register('title', { required: true })}
-            InputLabelProps={{ className: "text-gray-300" }}
-            InputProps={{ className: "text-white bg-gray-700" }}
+            
           />
 
           {/* Description Field */}
-          <TextField
+          <StyledTextField
             id="description"
             label="Description"
             variant="filled"
@@ -96,38 +121,35 @@ export default function BlogForm() {
             rows={4}
             fullWidth
             {...register('description', { required: true })}
-            InputLabelProps={{ className: "text-gray-300" }}
-            InputProps={{ className: "text-white bg-gray-700" }}
+            
           />
 
           {/* Image URL Field */}
-          <TextField
+          <StyledTextField
             id="imageUrl"
             label="Image URL"
             variant="filled"
             fullWidth
             {...register('imageUrl', { required: true })}
-            InputLabelProps={{ className: "text-gray-300" }}
-            InputProps={{ className: "text-white bg-gray-700" }}
+            
           />
 
           {/* Category Field */}
-          <TextField
+          <StyledTextField
             id="category"
             label="Category"
             variant="filled"
             fullWidth
             select
             {...register('category', { required: true })}
-            InputLabelProps={{ className: "text-gray-300" }}
-            InputProps={{ className: "text-white bg-gray-700" }}
+           
           >
             {techCategories.map((category) => (
               <MenuItem key={category.value} value={category.value}>
                 {category.label}
               </MenuItem>
             ))}
-          </TextField>
+          </StyledTextField>
 
           {/* Tags Input - Dropdown with Chips */}
           <div>

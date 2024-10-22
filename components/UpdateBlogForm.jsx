@@ -1,12 +1,38 @@
 'use client';
 import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { TextField, Button } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { updateBlog } from '../action/actions';
 import { useRouter } from 'next/navigation';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+// Styled TextField component with custom styles
+const StyledTextField = styled(TextField)({
+  '& label': {
+    color: 'rgb(209 213 219)', // text-gray-300
+  },
+  '& label.Mui-focused': {
+    color: 'rgb(209 213 219)',
+  },
+  '& .MuiFilledInput-root': {
+    backgroundColor: 'rgb(55 65 81)', // bg-gray-700
+    color: 'white',
+    '&:hover': {
+      backgroundColor: 'rgb(75 85 99)', // slightly lighter on hover
+    },
+    '&.Mui-focused': {
+      backgroundColor: 'rgb(55 65 81)',
+    },
+    '& input': {
+      color: 'white',
+    },
+    '& textarea': {
+      color: 'white',
+    }
+  }
+});
 
 export default function BlogForm({ blog }) {
   const { register, handleSubmit, reset } = useForm();
@@ -23,11 +49,9 @@ export default function BlogForm({ blog }) {
       formData.append('imageUrl', data.imageUrl);
       formData.append('category', data.category);
 
-      await updateBlog(id, formData); // Directly call the server action
-
-      ref?.current?.reset(); // Reset form after successful submission
+      await updateBlog(id, formData);
+      ref?.current?.reset();
       
-      // Show success toast notification
       toast.success('Blog updated successfully!', {
         position: 'top-right',
         autoClose: 3000, 
@@ -41,7 +65,6 @@ export default function BlogForm({ blog }) {
 
       router.push('/blogs');
     } catch (error) {
-      // Show error toast notification
       toast.error('Error updating blog. Please try again.', {
         position: 'top-right',
         autoClose: 3000,
@@ -61,24 +84,19 @@ export default function BlogForm({ blog }) {
       <div className="w-full max-w-lg mx-auto bg-gray-800 border border-gray-700 rounded-3xl shadow-2xl p-8">
         <h2 className="text-3xl font-extrabold text-center text-white mb-8">Update Blog Post</h2>
 
-        {/* ToastContainer to display notifications */}
         <ToastContainer />
 
         <form ref={ref} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Title Field */}
-          <TextField
+          <StyledTextField
             id="title"
             label="Title"
             variant="filled"
             fullWidth
             defaultValue={title}
             {...register('title')}
-            InputLabelProps={{ className: "text-gray-300" }}
-            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
-          {/* Description Field */}
-          <TextField
+          <StyledTextField
             id="description"
             label="Description"
             variant="filled"
@@ -87,35 +105,26 @@ export default function BlogForm({ blog }) {
             fullWidth
             defaultValue={description}
             {...register('description', { required: true })}
-            InputLabelProps={{ className: "text-gray-300" }}
-            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
-          {/* Image URL Field */}
-          <TextField
+          <StyledTextField
             id="imageUrl"
             label="Update Image URL"
             variant="filled"
             fullWidth
             defaultValue={imageUrl || ""}
             {...register('imageUrl', { required: true })}
-            InputLabelProps={{ className: "text-gray-300" }}
-            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
-          {/* Category Field */}
-          <TextField
+          <StyledTextField
             id="category"
             label="Category"
             variant="filled"
             fullWidth
             defaultValue={category}
             {...register('category', { required: true })}
-            InputLabelProps={{ className: "text-gray-300" }}
-            InputProps={{ className: "text-white bg-gray-700" }}
           />
 
-          {/* Submit Button */}
           <Button
             variant="contained"
             color="secondary"
@@ -130,4 +139,3 @@ export default function BlogForm({ blog }) {
     </div>
   );
 }
-0

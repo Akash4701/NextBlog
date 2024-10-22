@@ -24,6 +24,7 @@ model User {
   publishedAt   DateTime @updatedAt
   Comment Comments[]
   Blog   Blog[]
+  likes  Like[]
 
 
  
@@ -39,11 +40,23 @@ model Blog {
   createdAt  DateTime @default(now())
   publishedAt   DateTime @updatedAt
   comments  Comments[]  
+  likes   Like[]
+ 
+
 
   authorId String @db.ObjectId
   author   User?   @relation(fields: [authorId], references: [id])
 
  
+}
+
+model Like{
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId
+  user  User? @relation(fields: [userId], references: [id])
+  blogId String @db.ObjectId
+  blog  Blog? @relation(fields: [blogId], references: [id])
+  liked Boolean @default(true)
 }
 model Comments {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
